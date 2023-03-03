@@ -1,0 +1,7 @@
+apiVersion: sde.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: podpr
+spec:
+  count: 3
+  message: "Hello, World!"
