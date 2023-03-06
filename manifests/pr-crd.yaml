@@ -45,13 +45,13 @@ spec:
                   type: string
                 count:
                   type: integer
-  additionalPrinterColumns:
-    - name: Message
-      type: string
-      JSONPath: .spec.message
-    - name: Count
-      type: integer
-      JSONPath: .spec.count
+  #additionalPrinterColumns:
+    #- name: Message
+     # type: string
+     # JSONPath: .spec.message
+    #- name: Count
+      #type: integer
+      #JSONPath: .spec.count
 
 
 

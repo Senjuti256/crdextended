@@ -23,7 +23,9 @@ import (
 	"net/http"
 
 	samplecontrollerv1alpha1 "github.com/Senjuti256/crdextended/pkg/client/clientset/versioned/typed/sde.dev/v1alpha1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	discovery "k8s.io/client-go/discovery"
+	"k8s.io/client-go/dynamic"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
 )
@@ -37,6 +39,11 @@ type Interface interface {
 type Clientset struct {
 	*discovery.DiscoveryClient
 	samplecontrollerV1alpha1 *samplecontrollerv1alpha1.SamplecontrollerV1alpha1Client
+}
+
+// Resource implements dynamic.Interface
+func (*Clientset) Resource(resource schema.GroupVersionResource) dynamic.NamespaceableResourceInterface {
+	panic("unimplemented")
 }
 
 // SamplecontrollerV1alpha1 retrieves the SamplecontrollerV1alpha1Client

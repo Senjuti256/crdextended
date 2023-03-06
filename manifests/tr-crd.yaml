@@ -42,8 +42,8 @@ spec:
                   type: string
                 count:
                   type: integer
-  ownerReferences:
-    - apiVersion: sde.dev/v1alpha1
-      kind: PipelineRun
-      name: "{{ .Values.prName }}"
-      blockOwnerDeletion: true
+  #ownerReferences:
+   # - apiVersion: sde.dev/v1alpha1
+     # kind: PipelineRun
+      #name: "{{ .Values.prName }}"
+     # blockOwnerDeletion: true
