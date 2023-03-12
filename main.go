@@ -3,6 +3,7 @@ package main
 import (
 	//"context"
 	"flag"
+	"fmt"
 	//"fmt"
 	"path/filepath"
 	"time"
@@ -15,6 +16,7 @@ import (
 	klient "github.com/Senjuti256/crdextended/pkg/client/clientset/versioned"
 	kInfFac "github.com/Senjuti256/crdextended/pkg/client/informers/externalversions"
 	"github.com/Senjuti256/crdextended/pkg/controller"
+
 	//metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 )
@@ -48,25 +50,16 @@ func main() {
 	if err != nil {
 		klog.Errorf("getting klient set %s\n", err.Error())
 	}
-	// fmt.Println(klientset)
-
-	// Listing the existing trackpods.
-	//tpods, err := klientset.Samplecontroller().TrackPods("").List(context.Background(), metav1.ListOptions{})
-	//if err != nil {
-		//klog.Errorf("error while listing trackPods %s\n", err.Error())
-	//}
-	//fmt.Println(tpods)
-	// fmt.Printf("total trackPod sets: %d\n", len(tpods.Items))
+	 fmt.Println(klientset)
 
 	client, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		klog.Errorf("getting std client %s\n", err.Error())
 	}
 
-	infoFact := kInfFac.NewSharedInformerFactory(klientset, 20*time.Minute)
+	infoFact := kInfFac.NewSharedInformerFactory(klientset, 10*time.Minute)
 	// infoFact :=
 	ch := make(chan struct{})
-	// c := trackpod.NewController(client, klientset, infoFact.Aj().V1().TrackPods())
 	pc := controller.NewController(client, klientset, infoFact.Samplecontroller().V1alpha1().PipelineRuns(), infoFact.Samplecontroller().V1alpha1().TaskRuns())
 
 	infoFact.Start(ch)
