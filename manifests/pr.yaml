@@ -1,7 +1,7 @@
 apiVersion: sde.dev/v1alpha1
 kind: PipelineRun
 metadata:
-  name: prtest
+  name: prdemo
 spec:
   count: 2
-  message: "!!! Hello World !!!"
+  message: "!!! Hello--World !!!"

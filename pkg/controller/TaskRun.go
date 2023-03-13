@@ -1,5 +1,14 @@
 package controller
 
+import "fmt"
+
+func main(){
+	fmt.Println("Inside TaskRun controller")
+}
+
+
+/*package controller
+
 import (
 	"context"
 	"fmt"
@@ -123,6 +132,13 @@ func (c *Controller) updateTRStatus(trun *v1alpha1.TaskRun) error {
 
 	return err
 }
+
+*/
+
+
+
+
+	  
 
 
 //Deleting a particular TR CR all its corresponding pods get deleted.

@@ -3,13 +3,18 @@ module github.com/Senjuti256/crdextended
 go 1.19
 
 require (
-	github.com/kanisterio/kanister v0.0.0-20230302184117-2b3e3981b207
 	k8s.io/apimachinery v0.26.2
 	k8s.io/client-go v0.26.2
+	k8s.io/klog v1.0.0
 	k8s.io/klog/v2 v2.80.1
 )
 
-require github.com/jpillora/backoff v1.0.0 // indirect
+require (
+	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
+	github.com/google/uuid v1.3.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

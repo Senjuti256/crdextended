@@ -1,5 +1,18 @@
 package controller
 
+import "fmt"
+
+func printcase(){
+	fmt.Println("Inside PipelineRun controller")
+}
+
+
+
+
+
+
+/*package controller
+
 import (
 	"context"
 	"fmt"
@@ -96,22 +109,6 @@ func NewController(kubeClient kubernetes.Interface, prClient pClientSet.Interfac
 	)
 
 
-
-	//Adn on 9/3
-	/*trInformer.Informer().AddEventHandler(
-		cache.ResourceEventHandlerFuncs{
-			AddFunc: c.handleTaskRunAdd,
-			UpdateFunc: func(old, obj interface{}) {
-				oldpod := old.(*v1alpha1.TaskRun)
-				newpod := obj.(*v1alpha1.TaskRun)
-				if newpod == oldpod {
-					return
-				}
-				c.handleTaskRunAdd(obj)
-			},
-			DeleteFunc: c.handleTaskRunDel,
-		},
-	)*/
 	c.trInformer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
         
 		/*DeleteFunc: func(obj interface{}) {
@@ -132,7 +129,7 @@ func NewController(kubeClient kubernetes.Interface, prClient pClientSet.Interfac
                 }
             }
         },*/
-		DeleteFunc: c.handleTaskRunDel,
+/*		DeleteFunc: c.handleTaskRunDel,
     })
 
 
@@ -150,14 +147,6 @@ func NewController(kubeClient kubernetes.Interface, prClient pClientSet.Interfac
 // workers to finish processing their current work items.
 func (c *Controller) Run(ch chan struct{}) error {
 	defer c.wq.ShutDown()
-
-
-   //addn 9/3
-   //defer runtime.HandleCrash()
-   //go c.prInformer.Informer().Run(ch)
-   //go c.trInformer.Informer().Run(ch)
-
-
    
    klog.Info("Starting PipelineRun Controller")
 
@@ -222,19 +211,6 @@ func (c *Controller) processNextItem() bool {
 		return false
 	}
 
-	/*
-
-		    c1,err:=c.prClient.SamplecontrollerV1alpha1().PipelineRuns(ns).Get(context.TODO(),name,metav1.GetOptions{})
-			trunname := c1.Name +"-tr-"
-			taskrun,err :=c.trLister.TaskRuns(c1.Namespace).Get(trunname)
-			//if(err != nil){
-
-				if(taskrun.ObjectMeta.DeletionTimestamp.IsZero()==false){
-					c.createTaskRunOnDelete(taskrun)
-				}
-			//}
-
-	*/
 
 	trun, err := c.syncHandler(prun)
 	if err != nil {
@@ -263,21 +239,6 @@ func (c *Controller) processNextItem() bool {
 		}
 	}
 
-	// MY ADDITION ON 8/3
-
-	// check if any TaskRun resource has been deleted but its owner reference PipelineRun still exists
-	/*if trun == nil {
-		trunName := fmt.Sprintf("%v-tr-%v", prun.Name, prun.ObjectMeta.Generation) //fmt.Sprintf("%s-%s", prun.Name, prun.Status.Message)
-		_, err := c.prClient.SamplecontrollerV1alpha1().TaskRuns(prun.Namespace).Get(context.Background(), trunName, metav1.GetOptions{})
-		if err != nil && errors.IsNotFound(err) {
-			// TaskRun custom resource is deleted, recreate it
-			trun, err = c.recreateTaskRun(prun, trunName)
-			if err != nil {
-				klog.Errorf("Error recreating TaskRun for PipelineRun %s: %s", prun.Name, err.Error())
-				return false
-			}
-		}
-	}*/
 
 	return true
 }
@@ -296,32 +257,6 @@ if prun.Spec.Message != prun.Status.Message || prun.Spec.Count != prun.Status.Co
 
 fmt.Println("<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>> ", prun.Status, prun.Spec)
 
-
-
-/*
-    if(createTR){
-		// check if the taskrun exists
-		trun, err := c.trLister.TaskRuns(prun.Namespace).Get(prun.Name)
-		if err != nil {
-			// taskrun does not exist, recreate it
-			if errors.IsNotFound(err) {
-				klog.Infof("Taskrun %s for PipelineRun %s does not exist, recreating...", prun.Name, prun.Name)
-				trun, err = c.prClient.SamplecontrollerV1alpha1().TaskRuns(prun.Namespace).Create(context.TODO(), newTaskRun(prun), metav1.CreateOptions{})
-				if err != nil {
-					klog.Errorf("TaskRun recreation failed for Pipeline %s", prun.Name)
-					return nil, err
-				}
-				return trun, nil
-			}
-			klog.Errorf("Error getting TaskRun %s for PipelineRun %s: %s", prun.Name, prun.Name, err.Error())
-			return nil, err
-		}
-	//}
-
-		// taskrun exists, no need to recreate
-		//return trun, nil
-
-*/
 
 
 // create the taskrun CR.
@@ -353,69 +288,6 @@ if createTR {
 
 
 
-//Addn on 8/3
-/*func (c *Controller) syncHandler(prun *v1alpha1.PipelineRun) (*v1alpha1.TaskRun, error) {
-	var createTR bool
-
-	fmt.Println("Checking if the desired state is met or not")
-	if prun.Spec.Message != prun.Status.Message || prun.Spec.Count != prun.Status.Count {
-		fmt.Println("<<<<<<<<<<<<<< Mismatch found >>>>>>>>>>>> ")
-		createTR = true
-	}
-
-	fmt.Println("<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>> ", prun.Status, prun.Spec)
-
-	// Check if the TaskRun CR exists
-	trun, err := c.trLister.TaskRuns(prun.Namespace).Get(prun.Name)
-	if err != nil && errors.IsNotFound(err) {
-		// TaskRun CR not found, recreate it
-		klog.Info("Recreating TaskRun")
-		trun, err = c.recreateTaskRun(prun, prun.Name + "-tr-" + fmt.Sprint(prun.ObjectMeta.Generation))
-		if err != nil {
-			klog.Errorf("TaskRun recreation failed for Pipeline %s: %v", prun.Name, err)
-			return nil, err
-		}
-	}*/
-
-	//if createTR {
-		/*if trun == nil {
-			// Create a new TaskRun CR
-			trun, err = c.prClient.SamplecontrollerV1alpha1().TaskRuns(prun.Namespace).Create(context.TODO(), newTaskRun(prun), metav1.CreateOptions{})
-			if err != nil {
-				klog.Errorf("TaskRun creation failed for Pipeline %s: %v", prun.Name, err)
-				return nil, err
-			}
-		} 
-
-		if trun != nil {
-			klog.Infof("Taskrun %s has been created for PipelineRun %s", trun.Name, prun.Name)
-			if err := c.createPods(prun, trun); err != nil {
-				klog.Errorf("Taskrun %s failed to create pods", trun.Name)
-			}
-		}*/
-	/*	fmt.Println("Inside the condition to create TR custom resource")
-
-
-		tr, err := c.prClient.SamplecontrollerV1alpha1().TaskRuns(prun.Namespace).Create(context.TODO(), newTaskRun(prun), metav1.CreateOptions{})
-		if err != nil {
-			klog.Errorf("TaskRun creation failed for Pipeline %s", prun.Name)
-			return nil, err
-		}
-
-		if tr != nil {
-			klog.Infof("Taskrun %s has been created for PipelineRun %s", tr.Name, prun.Name)
-			if err := c.createPods(prun, tr); err != nil {
-				klog.Errorf("Taskrun %s failed to create pods", tr.Name)
-			}
-		}
-
-		return tr, nil
-	}
-
-	return trun, nil
-}
-
-*/
 
 
 
@@ -476,6 +348,14 @@ func (c *Controller) handleTaskRunAdd(obj interface{}) {
 	klog.Info(" Inside handleTaskRunAdd!!!")
 	c.wq.Add(obj)
 }
+
+*/
+
+
+
+
+
+
 
 
 //Handling the case that when TR deleted intentionally it will be recreated as long as the PR CR exists
@@ -614,7 +494,7 @@ func (c *Controller) createTaskRunOnDelete(obj interface{}) {
 }
 */
 
-func (c *Controller) getOwnerPipelineRun(taskRun *v1alpha1.TaskRun) (*v1alpha1.PipelineRun, error) {
+/*func (c *Controller) getOwnerPipelineRun(taskRun *v1alpha1.TaskRun) (*v1alpha1.PipelineRun, error) {
     for _, ownerRef := range taskRun.OwnerReferences {
         if ownerRef.Kind == "PipelineRun" {
             pipelineRun, err := c.prInformer.Informer().GetIndexer().ByIndex("byName", fmt.Sprintf("%s/%s", taskRun.Namespace, ownerRef.Name))
@@ -627,4 +507,4 @@ func (c *Controller) getOwnerPipelineRun(taskRun *v1alpha1.TaskRun) (*v1alpha1.P
         }
     }
     return nil, nil
-}
+}*/
