@@ -139,7 +139,7 @@ func (c *Controller) updateTRStatus(trun *v1alpha1.TaskRun) error {
 
 
 	  
-
+//The below functionality was woking automatically due to owner reference hence commented the below code.
 
 //Deleting a particular TR CR all its corresponding pods get deleted.
 

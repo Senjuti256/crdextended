@@ -358,6 +358,13 @@ func (c *Controller) handleTaskRunAdd(obj interface{}) {
 
 
 
+
+
+
+//Next portion whatever code is there is basically my addition on several sittings to handle the below case but none worked.
+
+
+
 //Handling the case that when TR deleted intentionally it will be recreated as long as the PR CR exists
 
 /*func (c *Controller) createTaskRun(prun *v1alpha1.PipelineRun) error {
